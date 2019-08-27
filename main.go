@@ -40,10 +40,10 @@ func MakeHtmlName() string {
 func DownloadHtml() {
 	msglogger.Println("begin down html ")
 	sp := spider.NewSpider()
-	body := sp.Fetch("http://live.500.com")
+	utf8_body := sp.Fetch("http://live.500.com")
 
-	decoder := mahonia.NewDecoder("GB18030")
-	utf8_body := decoder.ConvertString(string(body))
+	//	decoder := mahonia.NewDecoder("GB18030")
+	//	utf8_body := decoder.ConvertString(string(body))
 
 	filename := MakeHtmlName()
 	msglogger.Println("file =", filename)

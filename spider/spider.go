@@ -10,7 +10,7 @@ import (
 
 	//"strings"
 
-	_ "github.com/axgle/mahonia"
+	"github.com/axgle/mahonia"
 )
 
 type Spider struct{}
@@ -33,7 +33,7 @@ func NewSpider() *Spider {
 	return &Spider{}
 }
 
-func (s *Spider) Fetch(url string) []byte {
+func (s *Spider) Fetch(url string) string {
 	fmt.Println("Fetch Url", url)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", url, nil)
@@ -53,7 +53,9 @@ func (s *Spider) Fetch(url string) []byte {
 		fmt.Println("Read error", err)
 		return nil
 	}
-	return body
+	decoder := mahonia.NewDecoder("GB18030")
+	utf8_body := decoder.ConvertString(string(body))
+	return utf8_body
 }
 
 func (s *Spider) ParseOneGame(body string) *GameInfo {
