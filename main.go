@@ -19,7 +19,7 @@ func init() {
 	logpath := os.Getenv("LOGPATH")
 	logfile := os.Getenv("LOGFILE")
 	logfilename := fmt.Sprintf("%s/%s", logpath, logfile)
-	fd, err := os.OpenFile(logfilename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	fd, err := os.OpenFile(logfilename, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm)
 	if err != nil {
 		log.Panic("failed to Openfile")
 	}
@@ -32,6 +32,8 @@ func MakeHtmlName() string {
 	year := time.Now().Format("2006")
 	month := time.Now().Format("01")
 	day := time.Now().Format("02")
+	filepath := fmt.Sprintf("%s/%s/%s", htmlPath, year, month)
+	os.MkdirAll(filepath, 0777)
 	return fmt.Sprintf("%s/%s/%s/%s-%s-%s.html", htmlPath, year, month, year, month, day)
 }
 
@@ -56,7 +58,7 @@ func DownloadHtml() {
 func main() {
 	msglogger.Println("begin 500man's dream!")
 	cc := cron.New()
-	cc.AddFunc("0 05 17 * * *", DownloadHtml)
+	cc.AddFunc("0 30 0 * * *", DownloadHtml)
 	cc.Start()
 	defer cc.Stop()
 	for {
